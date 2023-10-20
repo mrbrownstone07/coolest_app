@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib import admin
+from django.http.request import HttpRequest
 
 class District(models.Model):
         
@@ -13,6 +14,21 @@ class District(models.Model):
         unique=True
     )
     
+    def __str__(self) -> str:
+        return self.name
+
+
+class InLineForecasts(admin.TabularInline):
+    from .forecasts import Forecast
+    model = Forecast
+    
     
 class DistrictAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["id", "name", "longitude", "latitude"]
+    inlines = [InLineForecasts]
+    
+    def has_change_permission(self, request: HttpRequest, obj=None) -> bool:
+        return False
+    
+    def has_add_permission(self, request: HttpRequest) -> bool:
+        return True

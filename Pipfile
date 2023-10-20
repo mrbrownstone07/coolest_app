@@ -8,6 +8,7 @@ django = "*"
 djangorestframework = "*"
 mysqlclient = "*"
 python-dotenv = "*"
+requests = "*"
 
 [dev-packages]
 

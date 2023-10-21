@@ -5,7 +5,7 @@ class FirstLocust(HttpUser):
     
     @task
     def test_coolest_districts_api(self):
-        self.client.get('/api/v1/coolest-districts')
+        self.client.get('/api/v1/coolest-districts/')
         
         
     @task 
@@ -22,5 +22,5 @@ class FirstLocust(HttpUser):
             {'location': 'Kushtia', 'destination': "Meherpur", 'travel_date': '2023-11-05'},
             {'location': 'Magura', 'destination': "Khulna", 'travel_date': '2023-11-05'},
         ]
-        api_response = self.client.post('/api/v1/travel-suggestions', data=request_data[random.randint(0, 9)])
+        api_response = self.client.post('/api/v1/travel-suggestions/', data=request_data[random.randint(0, 9)])
         

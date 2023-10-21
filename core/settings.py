@@ -14,7 +14,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = []
+allowed_host = os.getenv("DJANGO_ALLOWED_HOSTS") or 'localhost 127.0.0.1 [::1] '
 
 # Application definition
 INSTALLED_APPS = [
@@ -39,6 +39,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
@@ -58,11 +59,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -74,7 +70,7 @@ DATABASES = {
         'PASSWORD': str(os.getenv('DB_PASSWORD')),
         'HOST': str(os.getenv('DB_HOST')),
         'PORT': str(os.getenv('DB_PORT')),
-    }
+    } 
 }
 
 
@@ -110,7 +106,6 @@ STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 #log configurations
@@ -120,15 +115,17 @@ LOGGING = {
     'handlers': {
         'handle_success_filelog': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': './file_logs/success.log',
             'formatter': 'file_log',
+            'maxBytes': 5242880, # 5*1024*1024 bytes (5MB)
         },
         'handle_error_filelog': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': './file_logs/error.log',
             'formatter': 'file_log',
+            'maxBytes': 5242880, # 5*1024*1024 bytes (5MB)
         },
     },
     'loggers': {

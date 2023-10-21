@@ -1,13 +1,14 @@
 import os
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, time
 from django.conf import settings
 from django.db.transaction import atomic
 from api.models.districts import District
 from api.models.forecasts import Forecast
 from django.core.management.base import BaseCommand
 
+TIME = time(hour=14, minute=00)
 
 class Command(BaseCommand):
     help = "Pulls weather forecast data from the API and Pushes into DB."
@@ -32,16 +33,16 @@ def fetch_weather_data():
         forecasts = []
         for data, district in zip(forecast_data, districts):
             for datetimestamp, temperature in zip(data['hourly']['time'], data['hourly']['temperature_2m']):
-                date, time = datetimestamp.split('T')
-                print(f"Temperature: {temperature}, Date: {date}, Time: {time}, District: {district.name}, PK: {district.id}")
-                if temperature:
+                datestamp, timestamp = datetimestamp.split('T')
+                print(f"Temperature: {temperature}, Date: {datestamp}, Time: {timestamp}, District: {district.name}, PK: {district.id}")              
+                if temperature and datetime.strptime(timestamp, '%H:%M').time() == TIME:
                     forecast = Forecast(
                         temperature=temperature,
-                        forecast_date=datetime.strptime(date, '%Y-%m-%d'),
-                        forecast_time=datetime.strptime(time, '%H:%M'),
+                        forecast_date=datetime.strptime(datestamp, '%Y-%m-%d'),
+                        forecast_time=datetime.strptime(timestamp, '%H:%M').time(),
                         district=district
                     )
-                    forecasts.append(forecast)           
+                    forecasts.append(forecast)          
         Forecast.objects.bulk_create(forecasts)
                 
         

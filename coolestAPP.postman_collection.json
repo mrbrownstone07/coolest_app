@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "ade1ee02-7a12-41b8-96af-23cae749d35a",
+		"name": "coolestAPP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25360920"
+	},
+	"item": [
+		{
+			"name": "list_10_coolest_districts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/coolest-districts/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"coolest-districts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Travel Suggestion API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location\": \"Dhaka\",\r\n    \"destination\": \"Cox's Bazar\",\r\n    \"travel_date\": \"2023-11-05\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/travel-suggestions/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"travel-suggestions",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

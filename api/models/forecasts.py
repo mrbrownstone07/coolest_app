@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.http.request import HttpRequest
 from .districts import District
-
+from datetime import time
 class Forecast(models.Model):
     temperature = models.DecimalField(null=False, decimal_places=2, max_digits=4)
     forecast_date = models.DateField(null=False, db_index=True)
@@ -13,9 +13,15 @@ class Forecast(models.Model):
 
     def __str__(self) -> str:
         return f"""{self.district.name} 
-    {self.forecast_date.strftime(format="%m/%d/%Y")} 
-    {self.forecast_time.strftime(format="%H:%M:%S")}"""  
-
+            {self.forecast_date.strftime(format="%m/%d/%Y")} 
+            {self.forecast_time.strftime(format="%H:%M:%S")}"""  
+    
+    def check_forecast_date(forecast_date):
+        return Forecast.objects.filter(
+            forecast_date=forecast_date, 
+            forecast_time=time(hour=14, minute=00, second=00)
+        ).exists()    
+    
 
 class ForecastAdmin(admin.ModelAdmin):
     list_display = ['id', 'temperature', 'forecast_date', 'forecast_time', 'district']

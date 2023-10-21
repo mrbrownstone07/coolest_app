@@ -4,8 +4,8 @@ from django.http.request import HttpRequest
 from .districts import District
 
 class TravelSuggestionRequest(models.Model):
-    location = models.ForeignKey(District, related_name='TravelSuggestionLocation', on_delete=models.CASCADE)
-    destination = models.ForeignKey(District, related_name='TravelSuggestionDestination', on_delete=models.CASCADE)
+    location = models.ForeignKey(District, related_name='TravelSuggestionLocation', on_delete=models.CASCADE, db_index=True)
+    destination = models.ForeignKey(District, related_name='TravelSuggestionDestination', on_delete=models.CASCADE, db_index=True)
     travel_date = models.DateField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField(default=False)

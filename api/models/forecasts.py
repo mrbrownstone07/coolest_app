@@ -4,7 +4,7 @@ from django.http.request import HttpRequest
 from .districts import District
 from datetime import time
 class Forecast(models.Model):
-    temperature = models.DecimalField(null=False, decimal_places=2, max_digits=4)
+    temperature = models.DecimalField(null=False, decimal_places=2, max_digits=4, db_index=True)
     forecast_date = models.DateField(null=False, db_index=True)
     forecast_time = models.TimeField(null=False, db_index=True)
     created_at = models.DateTimeField(null=False, auto_now_add=True)

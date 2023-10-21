@@ -18,14 +18,15 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    "rest_framework",
+    "api",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "api",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -111,3 +112,54 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#log configurations
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'handle_success_filelog': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './file_logs/success.log',
+            'formatter': 'file_log',
+        },
+        'handle_error_filelog': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './file_logs/error.log',
+            'formatter': 'file_log',
+        },
+    },
+    'loggers': {
+        'restapi.log.success.file': {
+            'handlers': ['handle_success_filelog'],
+            'level': 'INFO',
+        },
+        'restapi.log.error.file': {
+            'handlers': ['handle_error_filelog'],
+            'level': 'INFO',
+        },
+    },
+    'formatters': {
+        'file_log': {
+            'format': '[{levelname}] [{asctime}] {msg}\n{params}\n',
+            'style': '{',
+        }
+    }
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DATETIME_FORMAT': '%s',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Coolest Districts API',
+    'DESCRIPTION': 'This projects helps you out to skip hotness :)',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}

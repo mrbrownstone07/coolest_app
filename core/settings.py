@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "drf_spectacular",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -96,8 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Dhaka"
-USE_I18N = True
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -160,3 +159,14 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379")
+if CELERY_RESULT_BACKEND == 'django-db':
+    INSTALLED_APPS += ['django_celery_results',]
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

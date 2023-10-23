@@ -41,6 +41,7 @@ from drf_spectacular.utils import extend_schema,OpenApiResponse,OpenApiExample
 )
 @api_view(['GET'])
 def get_coolest_districts(request):
+    print(type(request))
     errors = {}
     error_trackback = ''
     try:

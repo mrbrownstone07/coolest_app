@@ -8,21 +8,9 @@
 	"item": [
 		{
 			"name": "list_10_coolest_districts",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/v1/coolest-districts/",
 					"protocol": "http",

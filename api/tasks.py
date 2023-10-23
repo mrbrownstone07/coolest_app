@@ -1,17 +1,17 @@
 import requests
+from celery import shared_task
 from datetime import datetime, time
 from api.models.districts import District
 from api.models.forecasts import Forecast
-from django.core.management.base import BaseCommand
+from celery.utils.log import get_task_logger
 
+logger = get_task_logger(__name__)
 TIME = time(hour=14, minute=00)
 
-class Command(BaseCommand):
-    help = "Pulls weather forecast data from the API and Pushes into DB."
-    def handle(self, *args, **options):
-        fetch_weather_data()
+@shared_task()
+def sync_forecast_data():
+    logger.info("Starting forecast data sync task.")
     
-def fetch_weather_data():
     API_ENDPOINT = "https://api.open-meteo.com/v1/forecast"
     latitudes= []
     longitudes = []
@@ -36,16 +36,3 @@ def fetch_weather_data():
                              
         creates, updates = Forecast.bulk_update_or_create({'district': district}, 'forecast_date', updates_by_forecast_date)
         print(f"{district}: {creates} rows created, {updates} row updates!")
-        
-    
-        
- 
-    
-    
-    
-        
-        
-    
-    
-    
-    

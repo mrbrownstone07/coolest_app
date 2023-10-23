@@ -24,7 +24,13 @@ class Forecast(models.Model):
             forecast_time=time(hour=14, minute=00, second=00)
         ).exists()    
     
-    @classmethod
+   
+    """Source: https://stackoverflow.com/questions/27047630/django-batching-bulk-update-or-create
+    There is a possiblilty of having issues with this method when we use it to register data inside a view.
+    Problem: suppose two requests are made almost at the same time. One is faster than the other. There Might be a race condition.
+             But in my use case I am using this method to update or create data from a single point, and which is a backend task.
+    """
+    @classmethod 
     def bulk_update_or_create(cls, common_keys, unique_key_name, unique_key_to_defaults):
         """
         common_keys: {field_name: field_value}
@@ -35,6 +41,7 @@ class Forecast(models.Model):
             {"organization": organization}, "external_id", {1234: {"started": True}}
         )
         """
+        
         with transaction.atomic():
             filter_kwargs = dict(common_keys)
             filter_kwargs[f"{unique_key_name}__in"] = unique_key_to_defaults.keys()
@@ -82,6 +89,7 @@ class ForecastAdmin(admin.ModelAdmin):
     list_display = ['id', 'temperature', 'forecast_date', 'forecast_time', 'district', 'created_at', 'updated_at']
     date_hierarchy = 'forecast_date'
     list_filter = ['district', 'forecast_time']
+    ordering = [ 'district' ]
     
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False

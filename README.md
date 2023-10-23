@@ -2,7 +2,7 @@
 - [Data Source](https://open-meteo.com/en/docs)
 - API for the coolest 10 districts based on the average temperature at 2pm for the next 7 days.
 - API where given location, destination, and the date of travel. A decision is given whether to travel or not based on the temperature of 2pm of both places.
-****
+
 ## Dependencies
 There is a few dependencies which are required to make the application work correctly:
 
@@ -52,6 +52,21 @@ First you need to configure the dotenv file. I have provided the .env_example fi
 $ pipenv run python manage.py migrate
 ```
 
+after running migration is if you face `django.db.utils.OperationalError: (1071, 'Specified key was too long; max key length is 1000 bytes')` please execute the below sql on your database.
+```sh
+$ ALTER DATABASE `databasename` CHARACTER SET utf8;
+```
+
+Alternatively, if you create your database with the below sql command. You wont face the error.
+```sh
+$ CREATE DATABASE `databasename` CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; 
+```
+
+Create a super user using the below command.
+```sh
+$ pipenv run python manage.py createsuperuser
+```
+
 After that to load the initial data execute the below commands.
 - first command will parse the `districts.json` file and push the districts data into the database.
 - second command will use the districts longitude and latitude data, fetch data from the provided API and push that into database. For the initial setup I am using this command to fetch data. All subsequent process will be handled by backend tasks.
@@ -59,6 +74,11 @@ After that to load the initial data execute the below commands.
 ```sh
 $ pipenv run python manage.py load_districts_data
 $ pipenv run python manage.py fetch_weather_data
+```
+
+Run redis using the below command. Ater starting redis, you can check with `redis-cli` followed by `ping` it will return `PONG`.
+```sh
+$ redis-server
 ```
 
 Now you can run the below command on different terminals to  `start the development server`, `initate the workers`, `initiate the celery beat` respectively.

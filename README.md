@@ -45,6 +45,11 @@ Install the dependency packages using the below command from pipfile.
 $ pipenv install
 ```
 
+You will need install `redis`, for that you can use [`wsl`](https://learn.microsoft.com/en-us/windows/wsl/install). you can install redis using the below command on a `ubuntu` shell.
+```sh
+$ sudo apt install redis-server
+```
+
 ## Running the Project
 
 First you need to configure the dotenv file. I have provided the .env_example file. Rename it to .env and put the required parameters. Once the dotenv file has been configured please execute the below command to migrate the Database.
